@@ -1,15 +1,20 @@
 import { router, useRouter } from 'expo-router'
 import React, { useState } from 'react'
 import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native'
+import { loginUser } from '../app/services/authService';
+
 
 export default function LoginScreen() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
-    const handleLogin = () => {
+    const router = useRouter(); 
+    const handleLogin = async() => {
         console.log("llega a handled")
-        if (email == 'hola@test.com' && password == '123456') {
-            router.replace('/(tabs)');
+        const result = await loginUser(email, password);
+        console.log(result);
+
+        if(result.success) {
+            router.replace('/home');
         } else {
             console.log("ELSSSSSSSSSSSSSSSSSSSSSS");
             Alert.alert('Error', 'Credenciales inválidas');
